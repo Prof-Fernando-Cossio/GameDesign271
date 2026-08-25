@@ -5,8 +5,16 @@ using UnityEngine.PlayerLoop;
 
 public class MovimientoCuboS : MonoBehaviour
 {
+    public GameObject inicio;
+    public GameObject[] puntos;
     public float movimiento;
-    public float velocidad;
+    public float velocidad = 5f;
+    public int puntosindex = 0;
+
+    private void Start()
+    {
+        transform.position = inicio.transform.position;
+    }
 
     private void Update()
     {
@@ -15,11 +23,16 @@ public class MovimientoCuboS : MonoBehaviour
 
     void plataforma()
     {
+        if (Vector3.Distance(transform.position, puntos[puntosindex].transform.position) < 0.1f)
+        {
+            puntosindex++;
 
-       
-        transform.position = new Vector3 (movimiento + 0, 0, 0);
-        
-        transform.position = new Vector3(0, 0, 0);
+            if (puntosindex >= puntos.Length)
+            {
+                puntosindex = 0;
+            }
+        }
+        transform.position = Vector3.MoveTowards(transform.position, puntos[puntosindex].transform.position, velocidad *Time.deltaTime);
     }
 
 
