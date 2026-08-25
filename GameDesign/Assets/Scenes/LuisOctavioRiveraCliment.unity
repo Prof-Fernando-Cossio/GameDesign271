@@ -672,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e2f35be7c9f7547830ba2204b052a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::platformMovement
-  distance: 1000
+  distance: 5
   speed: 5
   moveX: 1
   moveY: 0

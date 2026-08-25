@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.InputManagerEntry;
@@ -7,10 +8,10 @@ using static UnityEngine.InputManagerEntry;
 public class platformMovement : MonoBehaviour
 {
     [Header("Variables")]
-    public float distance = 5;
-    public float speed = 5;
+    public float distance = 5f;
+    public float speed = 5f;
     public bool moveX = false;
-    public bool moveY = false;
+    public bool moveZ = false;
     private int doX = 1, doZ = 1;
 
     [Header("Vectors")]
@@ -18,35 +19,27 @@ public class platformMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        originalPosition = this.transform.position;
+        originalPosition = transform.position;
 
-        if (moveX == true)
-        {
-            doX = 1;
-        }
-        else
-        {
-            doX = 0;
-        }
-        if (moveY == true)
-        {
-            doZ = 1;
-        }
-        else
-        {
-            doZ = 0;
-        }
+        doX = moveX ? 1 : 0;
+        doZ = moveZ ? 1 : 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (this.transform.position.x == (originalPosition.x + distance) || this.transform.position.z == (originalPosition.z + distance))
+        bool outBoundX = transform.position.x >= (originalPosition.x + distance) || transform.position.x <= (originalPosition.x - distance);
+        bool outBoundZ = transform.position.z >= (originalPosition.z + distance) || transform.position.z <= (originalPosition.z - distance);
+        if (outBoundZ || outBoundX)
         {
             speed = -speed;
+
+            Vector3 clampedPosition = transform.position;
+            if(moveX) { clampedPosition.x = (Mathf.Clamp(clampedPosition.x, originalPosition.x - distance, originalPosition.x + distance)); }
+            if (moveZ) { clampedPosition.z = (Mathf.Clamp(clampedPosition.z, originalPosition.z - distance, originalPosition.z + distance)); }
         }
 
         Vector3 movement = new Vector3(doX * speed * Time.deltaTime, 0, doZ * speed * Time.deltaTime);
-        this.transform.position = movement;
+        transform.position += movement;
     }
 }
