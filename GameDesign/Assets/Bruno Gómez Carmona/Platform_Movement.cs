@@ -7,22 +7,31 @@ public class Platform_Movement : MonoBehaviour
 {
 
     public float speed = 1.0f;
-    public float distance;
-    public Vector3 currentpos;
-    public Vector3 targetpos;
-    public GameObject gameObject;
+    public  Transform posA, posB;
+     Vector3 targetpos;
+    
+ 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentpos = this.transform.position;
+        targetpos = posB.position;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        //float distance = Vector3(currentpos,);
 
+        if (Vector2.Distance(transform.position, posA.position) < 1f)
+        {
+            targetpos = posB.position;
+        }
+
+        if (Vector2.Distance(transform.position, posB.position) < 1f)
+        {
+            targetpos = posA.position;
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, targetpos, speed * Time.deltaTime);
     }
 }
