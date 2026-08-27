@@ -10,5 +10,7 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, targeted, speed * Time.deltaTime);
+
+
     }
 }
