@@ -12,25 +12,18 @@ public class PlataformMovement : MonoBehaviour
 
     }
 
-
     void Update()
-    {
-        transform.Translate(direction * Time.deltaTime * Speed);
-    }
-
-    public void MoveUp()
     {
         if (transform.position.y <= minY)
         {
             direction = Vector3.up;
         }
-    }
 
-    public void MoveDown()
-    {
+
         if (transform.position.y >= maxY)
         {
             direction = Vector3.down;
         }
+        transform.Translate(direction * Time.deltaTime * Speed);
     }
 }

@@ -338,7 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlataformMovement
   Speed: 5
   maxY: 5
-  minY: 5
+  minY: 1
 --- !u!1 &1008147535
 GameObject:
   m_ObjectHideFlags: 0
