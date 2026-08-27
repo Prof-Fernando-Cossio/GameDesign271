@@ -184,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27926403167d76149a57be95f3779d72, type: 2}
+  - {fileID: 2100000, guid: 43d648d6e50acc54eafb2e995d08e81e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -298,7 +298,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e8bc2ac2e8a2607459d9803e18dd6e5d, type: 2}
+  - {fileID: 2100000, guid: 2cfc50ee4db570c45903efc6b617f07f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -412,7 +412,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b00600508916c8540bf448af84765dfb, type: 2}
+  - {fileID: 2100000, guid: bde65c6ff9cf50240926d7378377cc6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -589,13 +589,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564504666}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.5097909, y: 0.49015602, z: -0.5050552, w: 0.49475214}
+  m_LocalPosition: {x: -1.11, y: 10.46, z: 29.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 91.715, y: 89.465, z: 0}
 --- !u!1 &1805975293
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,6 +608,7 @@ GameObject:
   - component: {fileID: 1805975296}
   - component: {fileID: 1805975295}
   - component: {fileID: 1805975294}
+  - component: {fileID: 1805975298}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -661,7 +662,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 56a7488a9bd8ad9479875b3717eba7cc, type: 2}
+  - {fileID: 2100000, guid: 6dfb461d38c22cd4d81267cceca2c4bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -708,6 +709,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805975298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805975293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a3095b5610de44d86980a4fc05b5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoverFigura
 --- !u!1 &1912539620
 GameObject:
   m_ObjectHideFlags: 0
