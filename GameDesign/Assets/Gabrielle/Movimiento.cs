@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Movimiento : MonoBehaviour
 {
-    public float speed = 5f;
-    public float rotation = 200f;
+    public float speed = 5.0f;
+    public float distance = 5.0f;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,10 +14,6 @@ public class Movimiento : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveZ = Input.GetAxis("Vertical");
-        float rotateX = Input.GetAxis("Horizontal");
-
-        transform.Translate(Vector3.forward * moveZ * speed * Time.deltaTime);
-        transform.Rotate(Vector3.up * rotateX * rotation * Time.deltaTime);
+        transform.position = new Vector3(Mathf.PingPong(Time.time * speed, distance), transform.position.y, transform.position.z);
     }
 }
