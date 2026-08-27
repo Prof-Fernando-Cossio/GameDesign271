@@ -22,7 +22,7 @@ public class move : MonoBehaviour
         {
             Velocidad = -direccion;
         }
-        transform.Translate(0, Velocidad * Time.deltaTime, 0);
+        transform.Translate(Velocidad * Time.deltaTime, 0, 0);
     }
 
 }
