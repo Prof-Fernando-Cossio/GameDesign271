@@ -23,6 +23,20 @@ public class ejercicio : MonoBehaviour
     public static ejercicio Instance { get; private set; }
     private List<GameObject> _inventoryItems = new List<GameObject>();
     [FormerlySerializedAs("_speed")][SerializeField] private float _speed;
+    private Vector3 _playerPosition;
+    public const int MaxPlayers = 4;
+    [SerializeField] protected float enemyDetectionDistance;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
