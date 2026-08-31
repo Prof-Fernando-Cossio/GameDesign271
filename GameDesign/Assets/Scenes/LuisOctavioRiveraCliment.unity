@@ -675,7 +675,7 @@ MonoBehaviour:
   distance: 5
   speed: 5
   moveX: 1
-  moveY: 0
+  moveZ: 1
 --- !u!1 &602558514
 GameObject:
   m_ObjectHideFlags: 0

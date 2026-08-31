@@ -1,4 +1,7 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class VariableDeclarationExercise : MonoBehaviour
 {
@@ -24,7 +27,7 @@ public class VariableDeclarationExercise : MonoBehaviour
     internal int GuardingIndex;
 
     //8.-
-    [Range(0, 100)]
+    [UnityEngine.Range(0, 100)]
     [SerializeField] private int _attackRange;
 
     //9.-
@@ -41,8 +44,27 @@ public class VariableDeclarationExercise : MonoBehaviour
     [Min(0.001f)] public float GameVolume;
 
     //13.-
-    private bool _enemyCanAttack; 
+    private bool _enemyCanAttack;
 
-    //14.-
-    //public instance GameManager;
+    //14.- 
+    public static GameObject GameManager;
+
+    //15.-
+    private List<string> _inventoryObjects = new List<string> {};
+
+    //16.-
+    [FormerlySerializedAs("_speed")]
+    [SerializeField] private float _newSpeed;
+
+    //17.-
+    private Vector3 _playerPosition;
+
+    //18.-
+    public int MaxPlayers;
+
+    //19.-
+    [SerializeField] protected float _enemyDetectionDistance;
+
+    //20.-
+    [SerializeField] private AudioSource _audioSource;
 }
