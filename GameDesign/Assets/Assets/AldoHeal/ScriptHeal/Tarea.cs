@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using RangeAttribute = UnityEngine.RangeAttribute;
 
 public class Tarea : MonoBehaviour
@@ -19,8 +20,15 @@ public class Tarea : MonoBehaviour
     protected float MovementSpeedEnemy;
     private MeshRenderer _meshRenderer;
     [SerializeField] [Tooltip("Volumen del juego")]private int _gameVolume;
-    private bool _canAttackEnemy;
-    
+    private bool _canattackEnemy;
+    public GameObject GameManager;
+    private List<string> _inventoryItems;
+    [FormerlySerializedAs("_speed")] [SerializeField] private float _Speed;
+    private Vector3 _playerLocation;
+    public int MaximumPlayers;
+    [SerializeField]protected internal float _enemyDetection;
+    [SerializeField] private AudioSource _audioSource;
+
 
 
 
