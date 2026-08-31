@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DeclaraciondeVariables : MonoBehaviour
@@ -13,8 +15,19 @@ public class DeclaraciondeVariables : MonoBehaviour
     public string NombreJugador;
     protected float VelocidadMovimiento;
     private MeshRenderer _meshRenderer;
-    
+    [Tooltip("Ajuste de sonido")]
     [SerializeField] private float _volumenJuego;
+    private bool puedeAtacar;
+    public static GameManager InstanciaGlobal;
+    private List<GameObject> objetosInventario;
+    [Obsolete("Usa Velocidad")]
+    [SerializeField] float _speed;
+    private Vector3 posicionJugador;
+    public static int CntidadMaxJugadores;
+    [SerializeField] protected float DistanciaDeteccionEnemiga;
+    [SerializeField] private AudioSource fuenteSonido;
+
+
 
 
 
