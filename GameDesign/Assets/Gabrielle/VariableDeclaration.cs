@@ -7,7 +7,7 @@ public class VariableDeclaration : MonoBehaviour
     // 1. Un valor de velocidad que solo este script usa
     // que sea editable desde el Inspector. Valor inicial de 5.
 
-   //[SerializeField]  
+    //[SerializeField]  
     //private float _movementSpeed = 5f;
 
     // 2. El nivel actual del jugador que otros sistemas del juego necesitan leer
@@ -21,12 +21,12 @@ public class VariableDeclaration : MonoBehaviour
 
     // 4. La vida actual del jugador. Ningún otro script debe poder modificarla directamente.
 
-   //private float _currentHealth;
+    //private float _currentHealth;
 
     // 5. Una referencia a Rigidbody que solo este script usa y que sea editable desde el Inspector.
 
-   //[SerializeField] 
-   //private Rigidbody _rb;
+    //[SerializeField] 
+    //private Rigidbody _rb;
 
     // 6. Un valor verdadero/falso que indique si el jugador sigue vivo. Solo este script lo usa.
 
@@ -34,12 +34,12 @@ public class VariableDeclaration : MonoBehaviour
 
     // 7. Un índice de guardado que ningún otro script fuera de este ensamblado pueda acceder
 
-   //internal int _saveGame;
+    //internal int _saveGame;
 
     // 8. Un rango de ataque que solo este script usa, editable desde el inspector y limitado entre 0 y 100.
 
-   //[SerializeField, Range(0f, 100f)]  
-   //private float _attackRange;
+    //[SerializeField, Range(0f, 100f)]  
+    //private float _attackRange;
 
     // 9. El nombre actual del jugador que cualquier sistema del juego debe poder leer.
 
@@ -64,7 +64,7 @@ public class VariableDeclaration : MonoBehaviour
 
     // 14. La instancia global de GameManager a la que cualquier script pueda acceder sin crearla
 
-   // public static GameManager GameManagerInstance;
+    // public static GameManager GameManagerInstance;
 
     // 15. Una lista para almacenar objetos del inventario. Solo este script la modifica
 
@@ -77,7 +77,7 @@ public class VariableDeclaration : MonoBehaviour
 
     // 17. Una posición del jugador usando Vector3. Solo este script la usa.
 
-   //private Vector3 _playerPosition;
+    //private Vector3 _playerPosition;
 
     // 18. La canitdad máxima de jugadores permitidos en la partida, que cualquier sistema deba consultar.
 
@@ -85,20 +85,71 @@ public class VariableDeclaration : MonoBehaviour
 
     // 19. Una distancia de detección enemiga que las clases derivadas puedan reutilizar y que sea editable desde el Inpesctor
 
-   // [SerializeField] 
+    // [SerializeField] 
     //protected float _detectionDistance;
 
     // 20. Una referencia a AudioSource que solo este script usa y que sea editable desde el Inspector
 
-  // [SerializeField]  
+    // [SerializeField]  
     //private AudioSource _audioSource;
-    
-   
+
+    //////EJERCICIOS 2////// 
+
+    //1. Crea un método que reduzca la vida actual de un jugador. Recibe la cantidad de daño como parámetro
+    public float ReduceHealth(float damage = 10)
+    {
+      Debug.Log("Health reduced by 10"); 
+    }
+    //2. Crea un método que verifique si el jugador está vivo según su vida actual
+    public bool IsPlayerAlive() //(Player myPlayer)
+    {
+        //return myPlayer.Health > 0;
+        return _playerHealth > 0; // return _playerLife > 0; 
+    }
+    //3. Crea un método que calcule la distancia entre dos posiciones en el espacio
+
+    //4. Crea un método que devuelva la dirección normalizada desde un origen hacia un destino
+
+    //5. Crea un método que devuelva el nombre actual del jugador
+
+    //6. Crea un método que cuente la cantidad de enemigos contenidos en una lista.
+
+    //7. Crea un método que encuentre el enemigo más cercano al jugador dentro de una lista.
+
+    //8. Crea un método que reciba velocidad y dirección, y mueva al jugador.
+
+    //9. Crea un método que convierta un ángulo expresado en grados a radianes.
+
+    //10. Crea un método que intente obtener al jugador más cercano dentro de un rango dado, indicando si se encontró uno y devolviendo el jugador obtenido.
+
+    //11. Crea un métodoque intente convertir un texto a entero, indicando si la conversación fue exitosa y devolviendo el valor obtenido.
+
+    //12. Crea un método que reciba un ángulo en grados y devuelva la rotación correspondiente como cuaternión
+
+    //13. Crea un método que llene una lista con todos los enemigos que se encuentren en un área dada.
+
+    //14. Crea un método que reinicie la posición del jugador a un punto de aparición
+
+    //15. En una clase base, crea un método diseñado para ser definido por las clases hijas
+
+    //16. En una clase hija, redefine el méte
+
+    //17. En la clase hija, llama al comportamiento original del método definido en la clase base.
+
+    //18. Crea un método que devuelva el porcentaje de vida actual de un jugador respecto a su vida máxima.
+
+    //19. Crea un método que determine si un enemigo puede esquivar un ataque según una probabilidad dada.
+
+    //20. Crea un método que aplique una fuerza en una dirección a un Rigidbody.
+
+
+
+
+
+
 
     //NOTAS :v
-
-    //PREGUNTAR AL PROFE el  { get; private set; } es para que los otros scripts o sistemas puedan leerlo mas no modificarlo pero debe tener el public para que si puedan leerlo
-    //
+    //lol
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -111,4 +162,7 @@ public class VariableDeclaration : MonoBehaviour
     {
        
     }
+
+    
+
 }
