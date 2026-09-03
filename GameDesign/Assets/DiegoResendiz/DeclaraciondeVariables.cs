@@ -6,26 +6,26 @@ public class DeclaraciondeVariables : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed = 5f;
     public int NivelJugador;
-    protected float dañoJugador = 10f;
-    internal int _vidaJugador;
+    protected int _dañoJugador = 10;
+    private int _vidaJugador;
     [SerializeField] private Rigidbody _rigidBody;
     private bool _isAlive;
-    internal int puntoGuardado;
-    [SerializeField] [Range(0f, 100f)] private float _rangoAtaque;
+    internal int _puntoGuardado;
+    [Range(0, 100)] [SerializeField]private float _rangoAtaque;
     public string NombreJugador;
-    protected float VelocidadMovimiento;
+    protected float _velocidadMovimiento;
     private MeshRenderer _meshRenderer;
     [Tooltip("Ajuste de sonido")]
-    [SerializeField] private float _volumenJuego;
-    private bool puedeAtacar;
-    public static GameManager InstanciaGlobal;
-    private List<GameObject> objetosInventario;
-    [Obsolete("Usa Velocidad")]
-    [SerializeField] float _speed;
-    private Vector3 posicionJugador;
-    public static int CntidadMaxJugadores;
-    [SerializeField] protected float DistanciaDeteccionEnemiga;
-    [SerializeField] private AudioSource fuenteSonido;
+    [SerializeField] private float _volumenJuego = 1f;
+    private bool _puedeAtacar;
+    public static GameManager Instancia;
+    private List<GameObject> _objetosInventario = new List<GameObject>();
+    [Obsolete("_speed")]
+    [SerializeField] private float _velocidadMov;
+    private Vector3 _posicionJugador;
+    public int CantidadMaxJugadores;
+    [SerializeField] protected float _distanciaDeteccion = 10f;
+    [SerializeField] private AudioSource _fuenteSonido;
 
 
 
