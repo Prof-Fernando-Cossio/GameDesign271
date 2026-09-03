@@ -12,7 +12,7 @@ public class Tarea : MonoBehaviour
     internal int PlayerLevel;
     protected int BaseDamage = 10;
     private int _playerHealth;
-    [SerializeField] protected Rigidbody rb;
+    [SerializeField] protected Rigidbody rigidbody;
     private bool _isAlive;
     private List<int> _saveFile;
     [Range (0,100)][SerializeField] private float damage;
