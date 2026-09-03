@@ -36,9 +36,9 @@ public class MethodsPractice : MonoBehaviour
     private Vector3 _targetPoint;
 
     //1
-    private int DamageReceived(int _damageDealt, int _currentHealth)
+    private int DamageReceived(int damageDealt, int currentHealth)
     {
-        return _currentHealth - _damageDealt;
+        return currentHealth - damageDealt;
     }
 
 
@@ -49,149 +49,148 @@ public class MethodsPractice : MonoBehaviour
     }
 
     //3
-    private float CalculateDistance(Vector3 _originPoint, Vector3 _targetPosition)
+    private float CalculateDistance(Vector3 originPoint, Vector3 targetPosition)
     {
-        return Vector3.Distance(_originPoint, _targetPosition);
+        return Vector3.Distance(originPoint, targetPosition);
     }
 
     //4
-    private Vector3 NormalizedDirection(Vector3 _originPoint, Vector3 _targetPosition)
+    private Vector3 NormalizedDirection(Vector3 originPoint, Vector3 targetPosition)
     {
-
-        return Vector3.Normalize(_targetPosition - _originPoint);
+        return Vector3.Normalize(targetPosition - originPoint);
     }
 
     //5
-    private string GetPlayerName(Player _myPlayer)
+    private string GetPlayerName(Player myPlayer)
     {
-        return _myPlayer.Name;
+        return myPlayer.Name;
     }
 
     //6
-    private int CountActiveEnemies(List<GameObject> _enemies)
+    private int CountActiveEnemies(List<GameObject> enemies)
     {
-        return _enemies.Count;
+        return enemies.Count;
     }
 
     //7
-    private void FindEnemyCloserToPlayer(List<GameObject> _enemies, Player _myPlayer)
+    private void FindEnemyCloserToPlayer(List<GameObject> enemies, Player myPlayer)
     {
-        float _closestDistance = 100f;
-        GameObject _closerEnemy = _enemies[0];
-        foreach (GameObject _enemy in _enemies)
+        float closestDistance = float.MaxValue;
+        GameObject closerEnemy = null;
+        foreach (GameObject enemy in enemies)
         {
-            float distance = Vector3.Distance(_myPlayer.transform.position, _enemy.transform.position);
-            if (distance < _closestDistance)
+            float distance = Vector3.Distance(myPlayer.transform.position, enemy.transform.position);
+            if (distance < closestDistance)
             {
-                _closestDistance = distance;
-                _closerEnemy = _enemy;
+                closestDistance = distance;
+                closerEnemy = enemy;
             }
         }
-        Debug.Log(_closerEnemy);
-        Debug.Log(_closestDistance);
+        Debug.Log(closerEnemy);
     }
 
     //8
-    private void CharacterMovement(float _speed, Vector3 _direction, CharacterController _playerController)
+    private void CharacterMovement(float speed, Vector3 direction, CharacterController playerController)
     {
-        _playerController.Move(_direction * _speed * Time.deltaTime);
+        playerController.Move(direction * speed * Time.deltaTime);
     }
 
     //9
-    private void ConvertToRadians(float _degrees)
+    private void ConvertToRadians(float degrees)
     {
-        Debug.Log((Mathf.PI * _degrees) / 180);
+        Debug.Log((Mathf.PI * degrees) / 180);
     }
 
     //10
-    private Player FindEnemyCloserToPlayer(List<Player> _players, Vector3 _pointToGo, float _rangeToAnalize)
+    private Player FindEnemyCloserToPlayer(List<Player> players, Vector3 pointToGo, float rangeToAnalize)
     {
-        float _closestDistance = 100f;
-        Player _closerPlayer = _players[0];
-        foreach (Player _player in _players)
+        float closestDistance = float.MaxValue;
+        Player closerPlayer = null;
+        foreach (Player player in players)
         {
-            float _distance = Vector3.Distance(_player.transform.position, _pointToGo);
-            if (_distance < _closestDistance && _distance < _rangeToAnalize)
+            float distance = Vector3.Distance(player.transform.position, pointToGo);
+            if (distance < closestDistance && distance < rangeToAnalize)
             {
-                _closestDistance = _distance;
-                _closerPlayer = _player;
+                closestDistance = distance;
+                closerPlayer = player;
             }
         }
-        return _closerPlayer;
+        return closerPlayer;
     }
 
     //11
-    private bool ConvertStringToInt(string _textToConvert)
+    private bool ConvertStringToInt(string textToConvert, out int resultValue)
     {
-        return Int32.TryParse(_textToConvert, out _);
+        return int.TryParse(textToConvert, out resultValue);
     }
 
     //12
-    private Quaternion DegreeToQuaternion(Vector3 _degree)
+    private Quaternion DegreeToQuaternion(Vector3 degree)
     {
-        float _sinAngle, _cosAngle;
+        float sinAngle, cosAngle;
 
-        Quaternion _xQuaternion = Quaternion.identity;
-        Quaternion _yQuaternion = Quaternion.identity;
-        Quaternion _zQuaternion = Quaternion.identity;
+        Quaternion xQuaternion = Quaternion.identity;
+        Quaternion yQuaternion = Quaternion.identity;
+        Quaternion zQuaternion = Quaternion.identity;
 
-        _sinAngle = Mathf.Sin(Mathf.Deg2Rad * _degree.x * 0.5f);
-        _cosAngle = Mathf.Cos(Mathf.Deg2Rad * _degree.x * 0.5f);
-        _xQuaternion.Set(_sinAngle, 0, 0, _cosAngle);
+        sinAngle = Mathf.Sin(Mathf.Deg2Rad * degree.x * 0.5f);
+        cosAngle = Mathf.Cos(Mathf.Deg2Rad * degree.x * 0.5f);
+        xQuaternion.Set(sinAngle, 0, 0, cosAngle);
 
-        _sinAngle = Mathf.Sin(Mathf.Deg2Rad * _degree.y * 0.5f);
-        _cosAngle = Mathf.Cos(Mathf.Deg2Rad * _degree.y * 0.5f);
-        _yQuaternion.Set(0, _sinAngle, 0, _cosAngle);
+        sinAngle = Mathf.Sin(Mathf.Deg2Rad * degree.y * 0.5f);
+        cosAngle = Mathf.Cos(Mathf.Deg2Rad * degree.y * 0.5f);
+        yQuaternion.Set(0, sinAngle, 0, cosAngle);
 
-        _sinAngle = Mathf.Sin(Mathf.Deg2Rad * _degree.z * 0.5f);
-        _cosAngle = Mathf.Cos(Mathf.Deg2Rad * _degree.z * 0.5f);
-        _zQuaternion.Set(0, 0, _sinAngle, _cosAngle);
+        sinAngle = Mathf.Sin(Mathf.Deg2Rad * degree.z * 0.5f);
+        cosAngle = Mathf.Cos(Mathf.Deg2Rad * degree.z * 0.5f);
+        zQuaternion.Set(0, 0, sinAngle, cosAngle);
 
-        return (_xQuaternion * _yQuaternion * _zQuaternion);
+        return (xQuaternion * yQuaternion * zQuaternion);
     }
 
     //13
-    private List<GameObject> EnemiesInZone(List<GameObject> _enemies, float _distanceToCenter, Vector3 _centerPoint)
+    private List<GameObject> EnemiesInZone(List<GameObject> enemies, float distanceToCenter, Vector3 centerPoint)
     {
-        List<GameObject> _enemiesInZone = new List<GameObject> { };
-        foreach(GameObject _enemy in _enemies)
+        List<GameObject> enemiesInZone = new List<GameObject> { };
+        foreach(GameObject enemy in enemies)
         {
-            float _distance = Vector3.Distance(_enemy.transform.position, _centerPoint);
-            if( _distance <= _distanceToCenter)
+            float distance = Vector3.Distance(enemy.transform.position, centerPoint);
+            if( distance <= distanceToCenter)
             {
-                _enemiesInZone.Add(_enemy);
+                enemiesInZone.Add(enemy);
             }
         }
-        return _enemiesInZone;
+        return enemiesInZone;
     }
 
     //14
-    private void ReturnPlayerToPoint(Player _myPlayer, Vector3 _pointToReturn)
+    private void ReturnPlayerToPoint(Player myPlayer, Vector3 pointToReturn)
     {
-        _myPlayer.transform.position = _pointToReturn;
+        myPlayer.transform.position = pointToReturn;
+        myPlayer.transform.rotation  = Quaternion.identity;
     }
 
     //18
-    private float CurrentHealthPercentage(int _health, int _currentHealth)
+    private float CurrentHealthPercentage(int health, int currentHealth)
     {
-        if (_health <= 0)
+        if (health <= 0)
         {
             return 0f;
         }
 
-        return (float)_currentHealth / _health;
+        return (float)currentHealth / health * 100;
     }
 
     //19
-    private bool EnemyDodge(float _dodgeProbability)
+    private bool EnemyDodge(float dodgeProbability)
     {
-        float _attemptToDodge = UnityEngine.Random.value;
-        return _attemptToDodge <= _dodgeProbability;
+        float attemptToDodge = UnityEngine.Random.value;
+        return attemptToDodge <= Mathf.Clamp01(dodgeProbability);
     }
 
     //20
-    private void ApplyForceToRigidBody(Rigidbody _ragdollRigidBody, Vector3 _direction, float _force)
+    private void ApplyForceToRigidBody(Rigidbody ragdollRigidBody, Vector3 direction, float force)
     {
-        _ragdollRigidBody.AddForce(_force * _direction, ForceMode.Impulse);
+        ragdollRigidBody.AddForce(force * direction, ForceMode.Impulse);
     }
 }

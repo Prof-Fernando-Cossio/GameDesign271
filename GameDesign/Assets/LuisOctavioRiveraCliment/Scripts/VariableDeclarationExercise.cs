@@ -9,7 +9,7 @@ public class VariableDeclarationExercise : MonoBehaviour
     [SerializeField] private float _movementSpeed = 5f;
 
     //2.-
-    public int ActualLevel;
+    public int PlayerLevel;
 
     //3.- 
     protected int _baseDamage = 10;
@@ -18,13 +18,13 @@ public class VariableDeclarationExercise : MonoBehaviour
     private int _currentPlayerHealth;
 
     //5.-
-    [SerializeField] private Rigidbody _rB;
+    [SerializeField] private Rigidbody _rigidBody;
 
     //6.-
     private bool _isAlive;
 
     //7.-
-    internal int GuardingIndex;
+    internal int _saveIndex;
 
     //8.-
     [UnityEngine.Range(0, 100)]
@@ -41,7 +41,7 @@ public class VariableDeclarationExercise : MonoBehaviour
 
     //12.-
     [Tooltip("Modifies the game volume")]
-    [Min(0.001f)] public float GameVolume;
+    [Min(0.001f)] private float _masterVolume = 1f;
 
     //13.-
     private bool _enemyCanAttack;
