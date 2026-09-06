@@ -4,68 +4,89 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
+
+
 public class Methods : MonoBehaviour
 {
     private int _currentHealth = 100;
     private int _generalHealth = 100;
-    
+
     public GameObject PosA;
     public GameObject PosB;
 
+
     public GameObject Enemies;
+
 
     public List<GameObject> enemies = new List<GameObject>();
     private int maxEnemiesSpawned;
     [SerializeField] private string _playerName;
 
+
     private GameObject _enemyPrefab;
 
+
     //1.- Un metodo que reduzca la vida actual del jugador. Recibe la cantidad de daño como parametro
+
 
     private void IsPlayerHit(int EnemyDamage)
     {
         _currentHealth = _generalHealth - EnemyDamage;
     }
 
+
     //2.- Un método que verifique si el jugador esta vivo segun su vida actual
 
-    private bool PlayerAlive( )
+
+    private bool PlayerAlive()
     {
         return _currentHealth > 0;
     }
 
+
     //3.- Un metodo que calcule la distancia entre dos posiciones en el espacio
+
 
     private float PositionDistances()
     {
+
 
         float distanceX = PosB.transform.position.x - PosA.transform.position.x;
         float distanceY = PosB.transform.position.y - PosA.transform.position.y;
         float distanceZ = PosB.transform.position.z - PosA.transform.position.z;
 
+
         float distance = Mathf.Sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
         Debug.Log(distance);
         return distance;
 
+
     }
+
 
     //4.- Un metodo que devuelva la direccion normalizada desde un origen hacia un destino
 
-    private float NormalizedDistance(Vector3 _origin, Vector3 _distance, float _maxDistance)
-    {
-        float distanceX = _distance.x - _origin.x;
 
-        return Mathf.Clamp01(distanceX / _maxDistance);
+    private float NormalizedDistance(Vector3 origin, Vector3 distance, float maxDistance)
+    {
+        float distanceX = distance.x - origin.x;
+
+
+        return Mathf.Clamp01(distanceX / maxDistance);
     }
 
+
     //5.- Un metodo que devuelva el nombre actual del jugador
+
 
     private string PlayerName()
     {
         return _playerName;
     }
 
+
     //6.- Un metodo que cuente la cantidad de enemigos contenidos en una lista
+
 
     private void CountEnemies()
     {
@@ -75,137 +96,175 @@ public class Methods : MonoBehaviour
         }
     }
 
+
     //7.- Un metodo que encuentre al enemigo más cercano al jugador dentro de una lista
 
-    private GameObject FindCloseEnemy(Vector3 _playerPosition, List<GameObject> _enemies)
+
+    private GameObject FindCloseEnemy(Vector3 playerPosition, List<GameObject> enemies)
     {
-        GameObject _closestEnemy = null;
-        float _closestDistance = Mathf.Infinity;
+        GameObject closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
 
-        foreach (GameObject _enemy in _enemies)
+
+        foreach (GameObject enemy in enemies)
         {
-            float _distance = Vector3.Distance(_playerPosition, _enemy.transform.position);
+            float distance = Vector3.Distance(playerPosition, enemy.transform.position);
 
-            if(_distance < _closestDistance)
+
+            if (distance < closestDistance)
             {
-                _closestEnemy = _enemy;
-                _closestDistance = _distance;
+                closestEnemy = enemy;
+                closestDistance = distance;
             }
         }
 
-        return _closestEnemy;
+
+        return closestEnemy;
     }
+
 
     //8.- Un metodo que reciba velocidad y dirección, y mueva al jugador
 
-    private GameObject Player(float _speed, Vector3 _direction)
+
+    private GameObject Player(float speed, Vector3 direction)
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            transform.position += _direction * _speed * Time.deltaTime;
+            transform.position += direction * speed * Time.deltaTime;
+
 
         }
+
 
         return null;
     }
 
+
     //9.- Un metodo que convierta un angulo expresado en grados a radianes
 
-    private float AngleToRadians(float _angleDegrees)
+
+    private float AngleToRadians(float angleDegrees)
     {
-        return _angleDegrees * Mathf.Deg2Rad;
+        return angleDegrees * Mathf.Deg2Rad;
     }
+
 
     //10.- Un metodo que intente obtener al jugador más cercano dentro de un rango dado,
     //      indicando si se encontro uno y devolviendo al jugador obtenido
 
-    private GameObject PlayerFinder(Vector3 Position, LayerMask PlayerLayer, float DetectionRadius, out GameObject PlayerTarget)
+
+    private GameObject PlayerFinder(Vector3 position, LayerMask playerLayer, float detectionRadius, out GameObject playerTarget)
     {
-        if (PlayerFinder(transform.position, PlayerLayer, DetectionRadius, out PlayerTarget))
+        if (PlayerFinder(transform.position, playerLayer, detectionRadius, out playerTarget))
         {
-            Debug.Log($"{PlayerTarget.name} found");
+            Debug.Log($"{playerTarget.name} found");
         }
         else
         {
             Debug.Log("No player found");
         }
 
+
         return null;
     }
 
-    //11.- Un metodo que intente convertir un texto a entero,
-    //      indicando si la conversion fue exitosa y devolviendo el valor obtenido 
 
-    private bool TextToInt(string _text, out int _value)
+    //11.- Un metodo que intente convertir un texto a entero,
+    //      indicando si la conversion fue exitosa y devolviendo el valor obtenido
+
+
+    private bool TextToInt(string text, out int value)
     {
-        return int.TryParse(_text, out _value);
+        return int.TryParse(text, out value);
     }
+
+
 
 
     //12.- Un metodo que reciba un angulo en grados y devuelva la rotación correspondiente como cuaternion
 
-    private Quaternion AngleToQuaternion(float _angleDegrees, Vector3 _axis)
+
+    private Quaternion AngleToQuaternion(float angleDegrees)
     {
-        return Quaternion.AngleAxis(_angleDegrees, _axis); 
+        return Quaternion.Euler(0f, angleDegrees, 0f);
     }
+
 
     //13.- Un metodo que llene una lista con todos los enemigos que se en un area dada
 
-    private void EnemiesList(Vector3 _center, float _radius, LayerMask _enemyLayer, List<GameObject> _enemies)
+
+    private void EnemiesList(Vector3 center, float radius, LayerMask enemyLayer, List<GameObject> enemies)
     {
-        Collider[] _colliders = Physics.OverlapSphere(_center, _radius, _enemyLayer);
-        foreach (Collider _collider in _colliders)
+        Collider[] colliders = Physics.OverlapSphere(center, radius, enemyLayer);
+        foreach (Collider collider in colliders)
         {
-            _enemies.Add(_collider.gameObject);
+            enemies.Add(collider.gameObject);
         }
     }
+
+
 
 
     //14.- Un metodo que reinicie la posicion del jugador a un punto de aparicion
 
-    private void ResetPlayerPosition(Transform _respawnPoint, Vector3 _point )
-    {
-        transform.position = _respawnPoint.position;
-    }
 
-    //15.- Un clase "base", crea un metodo diseñado para ser redefinido por las clases hijas
-
-    public class Interact : MonoBehaviour
+    private void ResetPlayerPosition(Vector3 respawnPoint, Rigidbody rigidBody)
     {
-        public virtual void InteractWithSomething()
+        transform.position = respawnPoint;
+        transform.rotation = Quaternion.identity;
+
+
+        if (rigidBody != null)
         {
-            Debug.Log("Interacting with something");
+            rigidBody.linearVelocity = Vector3.zero;
+            rigidBody.angularVelocity = Vector3.zero;
         }
     }
-    //16.- Una clase hija, redefine el metodo del ejercicio anterior para proporcionar un comportamiento especifico
 
-    public class InteractingWithChest : Interact
-    {
-        public override void InteractWithSomething()
-        {
-            //17.- En la clase hija, llama al comportamiento original del metodo definido en la clase base
-            base.InteractWithSomething();
-        Debug.Log("Interacting with the chest");
-        }
-    }
     //18.- Un metodo que devuelva el porcentaje de vida actual de un jugador respecto a su vida maxima
+
 
     private float HealthPercentage()
     {
         return (float)_currentHealth / _generalHealth * 100f;
-    } 
-     
+    }
+
     //19.- Un metodo que determine si un enemigo puede esquivar un ataque segun una probabilidad dada
 
-    private bool EnemyCanDodge(float _dodgeProbability)
+
+    private bool EnemyCanDodge(float dodgeProbability)
     {
-        return Random.value < _dodgeProbability;
+        return Random.value <= Mathf.Clamp01(dodgeProbability);
     }
+
 
     //20.- Un metodo que aplique una fuerza una direccion a un Rigidbody
 
-    private void ApplyForce(Rigidbody _rigidBody, Vector3 _force, Vector3 _position)
+
+    private void ApplyForce(Rigidbody rigidBody, float force, Vector3 position)
     {
-        _rigidBody.AddForceAtPosition(_force, _position);
+        rigidBody.AddForce(position.normalized * force, ForceMode.Impulse);
+    }
+}
+
+
+//15.- Un clase "base", crea un metodo diseñado para ser redefinido por las clases hijas
+public class Interact : MonoBehaviour
+{
+    public virtual void InteractWithSomething()
+    {
+        Debug.Log("Interacting with something");
+    }
+}
+//16.- Una clase hija, redefine el metodo del ejercicio anterior para proporcionar un comportamiento especifico
+
+
+public class InteractingWithChest : Interact
+{
+    public override void InteractWithSomething()
+    {
+        //17.- En la clase hija, llama al comportamiento original del metodo definido en la clase base
+        base.InteractWithSomething();
+        Debug.Log("Interacting with the chest");
     }
 }
