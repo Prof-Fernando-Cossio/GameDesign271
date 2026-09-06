@@ -1,137 +1,131 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MetodosEjercicio : MonoBehaviour
 {
-    [SerializeField] private int _playerHealth;
-    [SerializeField] private int _playerCurrentHealth;
     //1° Crea un método que reduzca la vida actual de un jugador. Recibe la cantidad de daño como parámetro.
-    private void DamageToPlayer(int _damageEnemy)
+    private void DamageToPlayer(int damageEnemy, int playerCurrentHealth)
     {
-        _damageEnemy =- _playerCurrentHealth;
+        damageEnemy =- playerCurrentHealth;
     }
 
     //2°Crea un método que verifique si el jugador está vivo según su vida actual
-    /*
-    private bool IsPlayerAlive (Player _myPlayer)
+    
+    private bool IsPlayerAlive (Player myPlayer)
     {
-        return Player.Health > 0;
-
-        return _playerLife > 0;
+        return myPlayer.Health() > 0;
         
     }
-    */
+    
     //3° Crear un metodo que calcule la distancia entre dos posiciones en el espacio
 
-    private void DistanceOfTwoPoints(Vector3 _firstPoint, Vector3 _secondPoint)
+    private void DistanceOfTwoPoints(Vector3 firstPoint, Vector3 secondPoint)
     {
-        Vector3.Distance(_firstPoint, _secondPoint);
+        Vector3.Distance(firstPoint, secondPoint);
 
     }
 
     //°4 Crea un método que devuelva la direccion normalizada desde un origen hasta su destino
 
-    private Vector3 NormalizeDirection (Vector3 _originPoint, Vector3 _destinyPoint)
+    private Vector3 NormalizeDirection (Vector3 originPoint, Vector3 destinyPoint)
     {
 
-        return Vector3.Normalize(_originPoint - _destinyPoint);
+        return Vector3.Normalize(originPoint - destinyPoint);
     }
     //5° Crea un método que devuelva el nombre actual del jugador
-    /*
-    private string GetPlayerName(Player _playerName) 
+    
+    private string GetPlayerName(Player playerName) 
     { 
-        return _playerName.Name;
+        return playerName.Name();
     }
-    */
+    
 
     //6° Crea un metodo que cuente la cantidad de enemigos contenidos en una lista
 
-    private void EnemyList(List<int> _enemyList)
+    private int EnemyList(List<GameObject> enemyList)
     {
-        foreach (int enemy in _enemyList) 
-        {
-            int _enemyNumber =+ 1 ;
-        }
+        return enemyList.Count;
     }
 
     //7° Crea un metodo que encuentre al enemigo mas cercano al jugador dentro de una lista
 
-    private void FindEnemy(List<Vector3> _enemyList, Vector3 _playerPoint)
+    private void FindEnemy(List<GameObject> enemyList, Player myPlayer)
     {
-        foreach (Vector3 _enemy in _enemyList) 
+        float closestDistance = float.MaxValue;
+        GameObject closerEnemy = null;
+        foreach (GameObject enemy in enemyList)
         {
-            float _enemyDistance = Vector3.Distance(_enemy, _playerPoint);
-
-            float? _enemyNearby = null;
-            if ( _enemyDistance < _enemyNearby)
+            float distance = Vector3.Distance(myPlayer.transform.position, enemy.transform.position);
+            if (distance < closestDistance)
             {
-                _enemyNearby = _enemyDistance;
+                closestDistance = distance;
+                closerEnemy = enemy;
             }
         }
+        Debug.Log(closerEnemy);
     }
 
     //8° Crea un metodo que reciba velocidad y dirección y mueva al jugador
 
-    private void MovementPlayer(Vector3 _directionPlayer, float _velocityPlayer)
+    private void MovementPlayer(Vector3 directionPlayer, float velocityPlayer)
     {
-        transform.position += _directionPlayer * _velocityPlayer * Time.deltaTime;
+        transform.position += directionPlayer * velocityPlayer * Time.deltaTime;
     }
 
     //9° Crea un metodo que convierta un angulo expresado en grados a radianes
 
-    private void GradesToRadian (double _angleInGrades)
+    private void GradesToRadian (float angleInGrades)
     {
-        double _angleInRadian = _angleInGrades * 3.1416 / 180;
+        Debug.Log((Mathf.PI * angleInGrades) / 180);
     }
 
     //10°Crear un metodo que intente obtener al jugador mas cercano dentro de un rango dado, indicando si se encontró uno y devolviendo el jugador obtenido
 
-    private GameObject PlayerNearby(GameObject[] _playerList, float _inRange, out bool _playerFound)
+    private Player PlayerNearby(List<Player> playerList, Vector3 initialPoint, float rangeDetection)
     {
-
-        GameObject _playerName = null;
-
-        foreach (GameObject _player in _playerList) 
+        float closestDistance = float.MaxValue;
+        Player closerPlayer = null;
+        foreach (Player player in playerList)
         {
-            float _playerDistance = Vector3.Distance(transform.position, _player.transform.position);
-
-            if (_playerDistance < _inRange)
+            float distance = Vector3.Distance(player.transform.position, initialPoint);
+            if (distance < closestDistance && distance < rangeDetection)
             {
-                _inRange = _playerDistance;
-                _playerName = _player;
+                closestDistance = distance;
+                closerPlayer = player;
             }
         }
-        _playerFound = _playerName != null;
-        return _playerName;
+        return closerPlayer;
     }
 
     //11° Crea un metodo que intente convertir un texto a entero, indicando si la conversión fue exitosa y devolviendo el valor obtenido
 
-    private bool TextToInteger(string _originalText, out int _numberOut) 
+    private bool TextToInteger(string originalText, out int numberOut) 
     {
-        return int.TryParse(_originalText, out _numberOut);
+        return int.TryParse(originalText, out numberOut);
     }
 
     //12° Crea un metodo que reciba un ángulo en grados y devuelva la rotación correspondiente como cuaternion
 
-    private Quaternion RotationInQuaternion(float _gradesInAngle)
+    private Quaternion RotationInQuaternion(float gradesInAngle)
     {
-        return Quaternion.Euler(0, _gradesInAngle, 0);
+        return Quaternion.Euler(0, gradesInAngle, 0);
     }
 
     //13° Crea un metodo que llene una lista con todos los enemigos que se encuentren en un area dada
-    private void EnemyListInArea(GameObject[] _enemyList, int _inRange)
+    private void EnemyListInArea(List<GameObject> enemyList, int inRange)
     {
-        List<GameObject> _enemyInRange = new List<GameObject>();
+        List<GameObject> enemyInRange = new List<GameObject>();
 
-        foreach (GameObject _enemy in _enemyList) 
+        foreach (GameObject enemy in enemyList) 
         {
-            float _enemyDistance = Vector3.Distance(transform.position, _enemy.transform.position);
-            if (_enemyDistance < _inRange)
+            float enemyDistance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (enemyDistance < inRange)
             {
-                _enemyInRange.Add(_enemy);
+                enemyInRange.Add(enemy);
             }
         }
     }
@@ -156,9 +150,8 @@ public class MetodosEjercicio : MonoBehaviour
         {
             int AttackValue = 5;
         }
-
-        //17° En la clase hija llama al comportamiento original en el método definido en la clase base
     }
+    //17° En la clase hija llama al comportamiento original en el método definido en la clase base
     public class Mage : Character
     {
         public override void Attack()
@@ -167,29 +160,29 @@ public class MetodosEjercicio : MonoBehaviour
         }
     }
     //18° Crea un metodo que devuelva un porcentaje de  vida actual del
-    private int PlayerHealthPercentaje (int _actualHealth, int _maxHealth)
+    private int PlayerHealthPercentaje (int actualHealth, int maxHealth)
     {
-        int _playerPercentaje;
-        return _playerPercentaje = _actualHealth / _maxHealth * 100;
+        int playerPercentaje;
+        return playerPercentaje = actualHealth / maxHealth * 100;
     }
     //19° Crea un método que determine si un enemigo puede esquivar un ataque con una probabilidad dada
-    private void CanAvoid(int _enemyAvoid, int _hitPercentaje)
+    private void CanAvoid(float enemyAvoid, float hitPercentaje)
     {
-        bool _canAvoid;
+        bool canAvoid;
 
-        if (_enemyAvoid > _hitPercentaje)
+        if (enemyAvoid > hitPercentaje)
         {
-            _canAvoid = true;
+            canAvoid = true;
         }
         else
         {
-            _canAvoid = false;
+            canAvoid = false;
         }
     }
     //20° Crea un método que aplique una fuerza en una dirección a un RigidBody
-    private void ForceToDirection(Rigidbody _rigidBody, float _forceOfImpact, Vector3 _directionOfImpact)
+    private void ForceToDirection(Rigidbody rigidBody, float forceOfImpact, Vector3 directionOfImpact)
     {
-        _rigidBody.AddForce(_directionOfImpact * _forceOfImpact);
+        rigidBody.AddForce(directionOfImpact * forceOfImpact);
     }
 
 
