@@ -7,11 +7,11 @@ public class Métodos : MonoBehaviour
     private string _playerName = "Lol";
 
     //1. Crea un método que reduzca la vida actual de un jugador. Recibe la cantidad de daño como parámetro
-    public float ReduceHealth(float damageAmount = 10f)
+    public void ReduceHealth(float damageAmount = 10f)
     {
         _currentHealth -= damageAmount;
         _currentHealth = Mathf.Max(_currentHealth, 0f);
-        Debug.Log("Health reduced by 10");
+        Debug.Log($"Health reduced by {damageAmount}");
     }
     //2. Crea un método que verifique si el jugador está vivo según su vida actual
     public bool IsPlayerAlive()
@@ -125,22 +125,31 @@ public class Métodos : MonoBehaviour
         playerTransform.position = spawnPoint;
     }
     //15. En una clase base, crea un método diseñado para ser definido por las clases hijas
-    public class CharacterBase
+    public class PlayerGun : MonoBehaviour 
     {
-        public virtual void ReceiveDamage(int damageAmount)
+        public virtual void ChangeWeapon()
         {
-            Debug.Log("Daño en la clase base: " + damageAmount);
+            Debug.Log("Weapon changed to default");
+        }
+        public virtual void BulletType()
+        {
+            Debug.Log("Bullet type is normal");
         }
     }
     //16. En una clase hija, redefine el método del ejercicio anterior para proporcionar un comportamiento específico.
-    public class EnemyCharacter : CharacterBase
+    public class EnemyCharacter : PlayerGun
     {
-        public override void RecieveDamage(int damageAmount)
+        public override void ChangeWeapon()
         {
-            Debug.Log("El enemigo hace animación de daño");
-            //17. En la clase hija, llama al comportamiento original del método definido en la clase base.
-            base.ReceiveDamage(damageAmount);
+            Debug.Log("Weapon changed to rifle");
         }
+            //17. En la clase hija, llama al comportamiento original del método definido en la clase base.
+        public override void BulletType()
+        {
+            base.BulletType();
+            Debug.Log("Bullet type is explosive");
+        }
+    }
     }
 
     //18. Crea un método que devuelva el porcentaje de vida actual de un jugador respecto a su vida máxima.
