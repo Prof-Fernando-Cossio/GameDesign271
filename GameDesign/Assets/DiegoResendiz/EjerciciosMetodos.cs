@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class EjerciciosMetodos : MonoBehaviour
 {
-    
+    private float _vidaActual = 100f;
+    private string _nombreJugador = "Player";
     //1. Crea un método que reduzca la vida actual de un jugador recibe la cantidad de daño como parámetro
-    public void RestarVida(int CantidadDaño)
+    public void RestarVida(int cantidadDaño)
     {
-        float vidaActual = 100f;
-        return vidaActual -= CantidadDaño;
+        _vidaActual = cantidadDaño;
+        
     }
 
     //2. Crea un método que verifique si el jugador está vivo segun su vida actual.
@@ -32,7 +33,7 @@ public class EjerciciosMetodos : MonoBehaviour
     //5. Crea un método que devuelva el nombre actual del jugador.
     public string ObtenerNombre()
     {
-        return nombreJugador;
+        return _nombreJugador;
     }
 
     //6. Crea un método que cuente la cantidad de enemigos contenidos en una lista.
@@ -44,32 +45,47 @@ public class EjerciciosMetodos : MonoBehaviour
     //7. Crea un método que encuentre el enemigo más cercano al jugador dentro de una lista.
     public GameObject EnemigoMasCercano(List<GameObject> enemigos)
     {
-        if (CalcularDistancia < menorDistancia)
+        GameObject enemigoCercano = null;
+        float distanciaMinima = Mathf.Infinity;
+        Vector3 posicionActual = transform.position;
+
+        foreach (GameObject enemigo in enemigos)
         {
-            menorDistancia = distancia;
-            cercano = enemigo;
+            if (enemigo != null)
+            {
+                float distancia = Vector3.Distance(posicionActual, enemigo.transform.position);
+                if (distancia < distanciaMinima)
+                {
+                    distanciaMinima = distancia;
+                    enemigoCercano = enemigo;
+                }
+            }
         }
+        return enemigoCercano;
     }
 
     //8. Crea un método que reciba velocidad y dirección, y mueva al jugador.
     public void MoveJugador(Vector3 direccion, float velocidad)
     {
-        TransformBlock.Translate(direccion.normalized * velocidad * TimeOnly.deltaTime);
+        transform.Translate(direccion.normalized * velocidad * Time.deltaTime);
     }
 
     //9. Crea un método que convierta un ángulo expresado en grados a radianes.
     public float CambioGradosaRadianes(float grados)
     {
-        return grados * MathF.Deg2Rad;
+        return grados * Mathf.Deg2Rad;
     }
 
     //10. Crea un método que intente obtener al jugador más cercano dentro de un rango dado, indicando si se encontró uno y devolviendo el jugador obtenido.
     public bool JugadorCercano(float rango, out GameObject jugadorEncontrado)
     {
-        if (jugadorEncontrado != null && Vector3Distance(transform.position, jugadorEncontrado.transform.position) <= rango)
+        jugadorEncontrado = GameObject.FindGameObjectWithTag("Player");
+        if (jugadorEncontrado != null && Vector3.Distance(transform.position, jugadorEncontrado.transform.position) <= rango)
         {
             return true;
         }
+            jugadorEncontrado = null;
+            return false;
     }
 
     //11. Crea un método que intente convertir un texto a entero, ind¡cando si la conversión fue exitosa y devolviendo el valor obtenido.
@@ -87,14 +103,19 @@ public class EjerciciosMetodos : MonoBehaviour
     //13. Crea un método que llene una lista con todos los enemigos que se encuentren en un área dada.
     public List<GameObject> Enemigoscerca(Vector3 centro, float radio)
     {
-        GameObject[] detectados = Physics.OverlapSphere(centro, radio);
-        return new List<GameObject>(detectados);
+        Collider[] colisiones = Physics.OverlapSphere(centro, radio);
+        List<GameObject> enemigosDetectados = new List<GameObject>();
+        
+        foreach (Collider colision in colisiones)
+        {
+            enemigosDetectados.Add(colision.gameObject);
+        }
+        return enemigosDetectados;
     }
-
     //14. Crea un método que reinicie la posición del jugador a un punto de aparición.
     public void ReiniciarPosicion(Vector3 puntoAparicion)
     {
-        TransformBlock.position = puntoAparicion;
+        transform.position = puntoAparicion;
     }
 
     //15. En una clase base, crea un método diseñado para ser redefinido por las clases hijas.
@@ -118,11 +139,11 @@ public class EjerciciosMetodos : MonoBehaviour
     //18. Crea un método que devuelva el porcentaje de vida actual de un jugador respecto a su vida máxima.
     public float PorcentajeVida(float vidaMaxima)
     {
-        return (vidaActual / vidaMaxima) * 100f;
+        return (_vidaActual / vidaMaxima) * 100f;
     }
 
     //19. Crea un método que determine si un enemigo puede esquivar un ataque según una probabilidad dada.
-    public bool Esquivar(float proabilidad)
+    public bool Esquivar(float probabilidad)
     {
         return Random.value <= probabilidad;
     }
