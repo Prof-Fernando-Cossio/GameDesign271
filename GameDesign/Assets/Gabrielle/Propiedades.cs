@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[Header("Serialized Fields")]
 private float _movementSpeed;
 [SerializeField] private float _stamina;
 private float _volume;
@@ -40,18 +41,22 @@ public int Experience { get; private set; }
 
 //10. Una propiedad de stamina visible públicamente pero respaldada por una variable serializada privada
 [SerializeField] private float _stamina;
-public float Stamina => _stamina;
+public float Stamina
+{
+    get => _stamina;
+    set => _stamina = value;
+} 
 
 //11. Una propiedad booleana calculada que indique si el enemigo pude atacar dependiendo de la distancia al jugador
-private float distanceToPlayer;
-private float attackRange;
-public bool CanAttack => Vector3.Distance(_player.transform.position, this.transform.position) <= _attackRange;
+private float _distanceToPlayer;
+private float _attackRange;
+public bool CanAttack => _distanceToPlayer <= _attackRange;
 
 //12. Una propiedad de volumen que use un full property para evitar valores negativos
 public float Volume { get { return _volume; } set { _volume = Mathf.Max(0, value); }}
 
 //13. Una propiedad readonly para la decha de creación del personaje
-public string CharacterCreationDate { get; } = System.DataTime.Now.ToString("yyyy-mm-dd");
+public string CharacterCreationDate { get; } = DateTime.Now;
 
 //14. Una propiuedad calculada que determine si el inventario está lleno
 private int _currentItemCount;
@@ -62,19 +67,21 @@ public bool IsInventoryFull => _currentItemCount >= _maxInventoryCapacity;
 public int MaxLevel { get; init; }
 
 //16. Una propiedad de velocidad horizontal calculada usando la velocidad actual del rigidbody
-public float HorizontalSpeed => new Vector2(_rigidBody.velocity.x, _rigidBody.velocity.z).magnitude; //??lol
+public float HorizontalSpeed => new Vector2(_rigidBody.velocity.x, 0f, _rigidBody.velocity.z).magnitude;
 
 //17. Una propiedad de energía que use private set
 public float Energy { get; private set; }
 
 //18. Una propiedad de posición actual que retorne directamente transform.position
-public Vector3 ActualPosition { get { return transform.position; } }
+public Vector3 ActualPosition => tranform.position;
 
 //19. Una propiedad que exponga _inventoryItems como solo lectura externa
-public List<string> InventoryItems { get { return _inventoryItems; } }
+public List<Item> InventoryItems { get; private set; }
+public List<Item> InventoryItems => new List<Item>(_inventoryItems);
+public IReadOnlyList<Item> InventoryItems => _inventoryItems;
 
 //20. Una prpieda calculada que determine si el personaje está corriendo dependiendo de la velocidad actual
-public bool IsRunning => ActualSpeed > 10;
+public bool IsRunning => _rigidbody.velocity.magnitude >= _runSpeedThreshold;
 
 
 public class Propiedades : MonoBehaviour
