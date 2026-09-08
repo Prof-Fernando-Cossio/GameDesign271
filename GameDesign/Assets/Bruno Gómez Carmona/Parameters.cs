@@ -51,7 +51,7 @@ public class Parameters : MonoBehaviour
         set => _speed = value;
     }
 
-    //7.- Propiedad de daño que limite automaticamente el valor entre 0 y 100 usando validacion perzonalizada
+    //7.- Propiedad de daï¿½o que limite automaticamente el valor entre 0 y 100 usando validacion perzonalizada
 
     public int Damage 
     {
@@ -67,7 +67,7 @@ public class Parameters : MonoBehaviour
 
     public int Experience { get; private set; }
 
-    //10.- Propiedad de stamina visible públicamente pero respaldada por una variable serializada privada
+    //10.- Propiedad de stamina visible pï¿½blicamente pero respaldada por una variable serializada privada
 
     public float Stamina
     {
@@ -101,7 +101,7 @@ public class Parameters : MonoBehaviour
 
     //16.- Propiedad de velocidad horizontal calculada usando la velocidad actual del Rigidbody
 
-    public float HorizontalSpeed => new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z).magnitude; 
+    public float HorizontalSpeed => new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z).magnitude; 
 
     //17.- Propiedad de energia que use private set
 
@@ -114,12 +114,12 @@ public class Parameters : MonoBehaviour
     //19.- Propiedad que exponga _inventoryItems como solo lectura externa
 
     public List<Item> InventoryItems { get; private set; }
-    public List<Item> InventoryItems => new List<Item>(_inventoryItems);
-    public IReadOnlyList<Item> InventoryItems => _inventoryItems;
+    //public List<Item> InventoryItems => new List<Item>(_inventoryItems);
+    //public IReadOnlyList<Item> InventoryItems => _inventoryItems;
 
     //20.- Propiedad calculada que determine si el personaje esta corriendo dependiendo de la velocidad actual
 
-    public bool IsPlayerRunning => _rigidbody.velocity.magnitude >= _actualVelocity;
+    public bool IsPlayerRunning => _rigidbody.linearVelocity.magnitude >= _actualVelocity;
 }
 
 
