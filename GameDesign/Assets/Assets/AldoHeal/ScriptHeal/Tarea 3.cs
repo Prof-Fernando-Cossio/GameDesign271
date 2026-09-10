@@ -1,301 +1,113 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 
 public class Tarea3 : MonoBehaviour
 {
 
-public class Player : MonoBehaviour
-{
-    private int health;
-    private int actualHealth;
-    private string name;
-    private int coins;
-    private float _currentHealth;
-    private float _maxHealth;
+    [Header("Serialized Fields")]
+    [SerializeField] private float _stamina;
+    [SerializeField] private float _distanceToPlayer;
+    [SerializeField] private float _attackRange = 2f;
+    [SerializeField] private Rigidbody _rigidbody;
+
+    [Header("Backing Fields")]
+    private int _currentHealth = 100;
+    private int _maxHealth = 100;
     private float _movementSpeed;
-    private float damage;
-    private static int connectedPlayers;
-    private int experience;
+    private int _damage;
+    private float _volume;
+    private int _maxInventorySize = 20;
+    private List<Item> _inventoryItems = new List<Item>();
+    private float _runSpeedThreshold = 5f;
 
-    [SerializeField]
-    private float stamina;
+    // 1. Una propiedad de vida que cualquier sistema pueda leer pero solo el propio objeto pueda modificar.
+    public int Health { get; private set; }
 
-    private Transform player;
-    private float attackDistance = 5f;
+    // 2. Una propiedad calculada que determine si el jugador est� muerto basado en la vida actual.
+    public bool IsDead => Health <= 0;
 
-    private float volume;
-    private DateTime creationDate = DateTime.Now;
+    // 3. Una propiedad de nombre del jugador que solo pueda asignarse al crear el objeto.
+    public string PlayerName { get; init; }
 
-    private List<string> inventoryItems = new List<string>();
-    private int inventoryCapacity = 10;
+    // 4. Una propiedad p�blica de monedas que permita lectura y escritura.
+    public int Coins { get; set; }
 
-    private int maxLevel;
+    // 5. Una propiedad de porcentaje de vida calculada autom�ticamente usando _currentHealth y _maxHealth.
+    public float HealthPercent => _maxHealth > 0 ? (float)_currentHealth / _maxHealth * 100f : 0f;
 
-    private Rigidbody rigidbody;
-
-    private float energy;
-
-    // 1
-    public int Health
-    {
-        get
-        {
-            return health;
-        }
-
-        private set
-        {
-            health = value;
-        }
-    }
-
-    // 2
-    public bool IsDead
-    {
-        get
-        {
-            return actualHealth <= 0;
-        }
-    }
-
-    // 3
-    public string Name
-    {
-        get
-        {
-            return name;
-        }
-
-        init
-        {
-            name = value;
-        }
-    }
-
-    // 4
-    public int Coins
-    {
-        get
-        {
-            return coins;
-        }
-
-        set
-        {
-            coins = value;
-        }
-    }
-
-    // 5
-    public float HealthPercentage
-    {
-        get
-        {
-            return (_currentHealth / _maxHealth) * 100f;
-        }
-    }
-
-    // 6
+    // 6. Una propiedad que encapsule _movementSpeed usando un backing field.
     public float MovementSpeed
     {
-        get
-        {
-            return _movementSpeed;
-        }
-
-        set
-        {
-            _movementSpeed = value;
-        }
+        get => _movementSpeed;
+        set => _movementSpeed = value;
     }
 
-    // 7
-    public float Damage
+    // 7. Una propiedad de da�o que limite autom�ticamente el valor entre 0 y 100 usando validaci�n personalizada.
+    public int Damage
     {
-        get
-        {
-            return damage;
-        }
-
-        set
-        {
-            if (value < 0)
-            {
-                damage = 0;
-            }
-            else if (value > 100)
-            {
-                damage = 100;
-            }
-            else
-            {
-                damage = value;
-            }
-        }
+        get => _damage;
+        set => _damage = Mathf.Clamp(value, 0, 100);
     }
+    
+    // 8. Una propiedad est�tica que almacene la cantidad total de jugadores conectados.
+    public static int TotalPlayers { get; private set; }
 
-    // 8
-    public static int ConnectedPlayers
-    {
-        get
-        {
-            return connectedPlayers;
-        }
+    // 9. Una propiedad de experiencia que solo pueda modificarse internamente.
+    public int Experience { get; private set; }
 
-        set
-        {
-            connectedPlayers = value;
-        }
-    }
-
-    // 9
-    public int Experience
-    {
-        get
-        {
-            return experience;
-        }
-
-        private set
-        {
-            experience = value;
-        }
-    }
-
-    // 10
+    // 10. Una propiedad de stamina visible p�blicamente pero respaldada por una variable serializada privada.
     public float Stamina
     {
-        get
-        {
-            return stamina;
-        }
-
-        set
-        {
-            stamina = value;
-        }
+        get => _stamina;
+        private set => _stamina = value;
     }
 
-    // 11
-    public bool CanAttack
-    {
-        get
-        {
-            float distance = Vector3.Distance(transform.position, player.position);
+    // 11. Una propiedad booleana calculada que indique si el enemigo puede atacar dependiendo de la distancia al jugador.
+    public bool CanAttack => _distanceToPlayer <= _attackRange;
 
-            return distance <= attackDistance;
-        }
-    }
-
-    // 12
+    // 12. Una propiedad de volumen que use un full property para evitar valores negativos.
     public float Volume
     {
-        get
-        {
-            return volume;
-        }
-
-        set
-        {
-            if (value < 0)
-            {
-                volume = 0;
-            }
-            else
-            {
-                volume = value;
-            }
-        }
+        get => _volume;
+        set => _volume = Mathf.Max(0f, value);
     }
 
-        // 13
-        public DateTime CreationDate 
-    {
-        get
-        {
-            return creationDate;
-        }
-    }
+    // 13. Una propiedad readonly para la fecha de creaci�n del personaje.
+    public DateTime CreationDate { get; } = DateTime.Now;
 
-    // 14
-    public bool IsInventoryFull
-    {
-        get
-        {
-            return inventoryItems.Count >= inventoryCapacity;
-        }
-    }
+    // 14. Una propiedad calculada que determine si el inventario est� lleno.
+    public bool IsInventoryFull => _inventoryItems.Count >= _maxInventorySize;
 
-    // 15
-    public int MaxLevel
-    {
-        get
-        {
-            return maxLevel;
-        }
+    // 15. Una propiedad de nivel m�ximo configurable �nicamente durante inicializaci�n usando init.
+    public int MaxLevel { get; init; }
 
-        init
-        {
-            maxLevel = value;
-        }
-    }
+    // 16. Una propiedad de velocidad horizontal calculada usando la velocidad actual del Rigidbody.
+    public float HorizontalSpeed => new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z).magnitude;
 
-    // 16
-    public float HorizontalVelocity
-    {
-        get
-        {
-            return rigidbody.linearVelocity.x;
-        }
-    }
+    // 17. Una propiedad de energ�a que use private set.
+    public float Energy { get; private set; }
 
-    // 17
-    public float Energy
-    {
-        get
-        {
-            return energy;
-        }
+    // 18. Una propiedad de posici�n actual que retorne directamente transform.position.
+    public Vector3 CurrentPosition => transform.position;
 
-        private set
-        {
-            energy = value;
-        }
-    }
+    // 19. Una propiedad que exponga _inventoryItems como solo lectura externa usando List<Item>.
+    public List<Item> InventoryItems { get; private set; }
 
-    // 18
-    public Vector3 CurrentPosition
-    {
-        get
-        {
-            return transform.position;
-        }
-    }
+    //public List<Item> InventoryItems => new List<Item>(_inventoryItems);
 
-    // 19
-    public IReadOnlyList<string> InventoryItems
-    {
-        get
-        {
-            return inventoryItems;
-        }
-    }
+    //public IReadOnlyList<Item> InventoryItems => _inventoryItems;
 
-    // 20
-    public bool IsRunning
-    {
-        get
-        {
-            return Mathf.Abs(rigidbody.linearVelocity.x) > 0.1f;
-        }
-    }
-
-    private void Awake()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-    }
+    // 20. Una propiedad calculada que determine si el personaje est� corriendo dependiendo de la velocidad actual.
+    public bool IsRunning => _rigidbody.linearVelocity.magnitude >= _runSpeedThreshold;
 }
+
+[Serializable]
+public class Item
+{
+    public string Name;
 }
+
